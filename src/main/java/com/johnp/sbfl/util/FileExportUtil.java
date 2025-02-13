@@ -41,13 +41,14 @@ public class FileExportUtil {
         sheet.autoSizeColumn(2);
         sheet.autoSizeColumn(3);
         sheet.autoSizeColumn(4);
+        sheet.createFreezePane(0, 1);
 
         // ** REF:
         // ** https://stackoverflow.com/questions/77938769/how-to-add-filters-for-specific-columns-using-apache-poi
         sheet.setAutoFilter(CellRangeAddress.valueOf("A1:E1"));
     }
 
-    private static void writeHeaderLine(XSSFSheet sheet) {
+    private static void writeHeaderLine(XSSFSheet sheet) {  
 
         Row headerRow = sheet.createRow(0);
 
