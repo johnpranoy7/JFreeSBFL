@@ -15,15 +15,11 @@ public class MethodInfo {
     private double suspiciousnessJaccard;
     private double suspiciousnessOchiai;
 
-    public MethodInfo(String name){
+    public MethodInfo(String name) {
         this.name = name;
         executingTestFailure = 0;
         executingTestPassed = 0;
         totalFailures = 0;
         totalPasses = 0;
     }
-
-
-
-
 }
