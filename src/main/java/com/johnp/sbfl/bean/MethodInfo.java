@@ -1,4 +1,4 @@
-package com.johnp.sbfl;
+package com.johnp.sbfl.bean;
 
 import lombok.Data;
 
