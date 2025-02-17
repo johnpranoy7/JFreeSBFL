@@ -23,11 +23,11 @@ public class SuspicionProcessor {
     }
 
     public static double calculateJaccard(double ef, double ep, double nf) {
-        return safeDiv(ef, ef + nf + ep);
+        return safeDiv(ef, nf + ep);
     }
 
     public static double calculateOchiai(double ef, double ep, double nf) {
-        return ef / Math.sqrt((ef + nf) * (ef + ep));
+        return ef / Math.sqrt(nf * (ef + ep));
     }
 
     public static List<Map.Entry<String, MethodInfo>> sortSuspicion(Map<String, MethodInfo> data) {

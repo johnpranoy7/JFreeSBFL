@@ -1,6 +1,8 @@
 package com.johnp.sbfl.util;
 
 import com.johnp.sbfl.bean.MethodInfo;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -13,15 +15,18 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Analyzer {
 
     static Map<String, MethodInfo> methodMap = new HashMap<>();
 
-    public static Map<String, MethodInfo> analyzeFolder(File folder, int failCount) throws IOException {
+    public static Map<String, MethodInfo> analyzeFolder(File folder, int failCount) {
 
         File[] listOfFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
 
         int flunkCount = 0;
+        int totalFailedTests = 0;
+        int totalPassedTests = 0;
 
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
@@ -35,11 +40,20 @@ public class Analyzer {
                                 String testName = parts[0];
                                 boolean testResult = Boolean.parseBoolean(parts[1]);
                                 log.info("Reading File:- TestName: {} , TestResult: {}", testName, testResult);
+
                                 //** Manually Updating the First 200 Files to False irrespective of their initial value */
                                 if (flunkCount++ < failCount) {
                                     log.info("Updating TestResult with Failure. prevVal:{}, currentVal:{}", testResult, false);
                                     testResult = false;
                                 }
+
+                                //** Increment Total Pass and Fail
+                                if (testResult) {
+                                    totalPassedTests++;
+                                } else {
+                                    totalFailedTests++;
+                                }
+
                                 constructAndUpdateMethodDetails(lines, testName, testResult);
                             }
                         }
@@ -49,8 +63,8 @@ public class Analyzer {
                 }
             }
 
-            // **Compute Suspicious Formulas
-            computeSBFLForEachMethod();
+            // ** Compute Suspicious Formulas
+            computeSBFLForEachMethod(totalPassedTests, totalFailedTests);
 
             return methodMap;
 
@@ -60,43 +74,38 @@ public class Analyzer {
         return Collections.emptyMap();
     }
 
-    private static void computeSBFLForEachMethod() {
+    private static void computeSBFLForEachMethod(int totalPassedTests, int totalFailedTests) {
         methodMap.forEach((methodName, methodInfo) -> {
-            methodInfo.setSuspiciousnessTarantula(SuspicionProcessor.calculateTarantula(methodInfo.getExecutingTestFailure(),
-                    methodInfo.getExecutingTestPassed(), methodInfo.getTotalFailures(), methodInfo.getTotalPasses()));
+            methodInfo.setSuspiciousnessTarantula(SuspicionProcessor.calculateTarantula(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests, totalPassedTests));
 
-            methodInfo.setSuspiciousnessSbi(SuspicionProcessor.calculateSbi(methodInfo.getExecutingTestFailure(),
-                    methodInfo.getExecutingTestPassed()));
+            methodInfo.setSuspiciousnessSbi(SuspicionProcessor.calculateSbi(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures()));
 
-            methodInfo.setSuspiciousnessJaccard(SuspicionProcessor.calculateJaccard(methodInfo.getExecutingTestFailure(),
-                    methodInfo.getExecutingTestPassed(), methodInfo.getTotalFailures()));
+            methodInfo.setSuspiciousnessJaccard(SuspicionProcessor.calculateJaccard(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests));
 
-            methodInfo.setSuspiciousnessOchiai(SuspicionProcessor.calculateOchiai(methodInfo.getExecutingTestFailure(),
-                    methodInfo.getExecutingTestPassed(), methodInfo.getTotalFailures()));
+            methodInfo.setSuspiciousnessOchiai(SuspicionProcessor.calculateOchiai(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests));
         });
     }
 
     private static void constructAndUpdateMethodDetails(List<String> lines, String testName, boolean testResult) {
-        lines.stream().skip(1).forEach(line -> {
-            if (line.contains(":")) {
-                String methodName = line.split(":[^:]+$")[0];
+        lines.stream().skip(1).forEach(methodName -> {
 
-                // ** Constructing DataStructure */
-                methodMap.compute(methodName, (k, v) -> {
-                    if (v == null) {
-                        v = new MethodInfo(testName);
-                    }
-                    if (testResult) {
-                        v.setExecutingTestPassed(v.getExecutingTestPassed() + 1);
-                        v.setTotalPasses(v.getTotalPasses() + 1);
-                    } else {
-                        v.setExecutingTestFailure(v.getExecutingTestFailure() + 1);
-                        v.setTotalFailures(v.getTotalFailures() + 1);
-                    }
-                    return v;
-                });
+            // ** Constructing DataStructure */
+            methodMap.compute(methodName, (k, v) -> {
+                if (v == null) {
+                    v = new MethodInfo(testName);
+                }
+                if (testResult) {
+                    v.setMethodFailures(v.getMethodFailures() + 1);
+                } else {
+                    v.setMethodPasses(v.getMethodPasses() + 1);
+                }
+                return v;
+            });
 
-            }
         });
     }
 }
