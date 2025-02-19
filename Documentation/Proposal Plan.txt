@@ -1,0 +1,21 @@
+# Project Proposal: JFreeSBFL (Spectrum Based Fault Localization) Project by John Pranoy Yalla
+
+## Overview
+JFreeSBFL is a Java application designed to analyze software testing coverage data and generate an Excel file with calculated suspicion data. 
+
+## Objectives
+- Develop a Java application to analyze software testing coverage data.
+- Generate an Excel file with calculated suspicion data.
+- Allow the application to accept runtime arguments for file path and fail count.
+- Ensure the application logs relevant information using SLF4J with Logback.
+
+## Approach
+- The Given Input Folder contains around 2000 Files. They all have similar pattern.
+- Each file has 1st Line containing JunitTest name followed by result (true/false). The remaining lines of the File contain the java bytecode clearly showing methods and variables that are being accessed.
+- If we look closely at the Java Bytecode we can clearly see the package name, Class and method names that are being covered in the source code. 
+- We need to construct a data structure that can capture the covered methods/variables and update the count based on the number of failed/passed junits that touched/accessed those methods.
+- We also need to manually fail few testCases. We can use a default value and also provide the enduser with an option to fail certain number of testCases.
+- Once we capture the data into our DataStructure we can proceed for Suspicion Caluclation. We could write a Utility Class with methods for tarantula, SBI, Jaccard and Ochai Suspicions.
+- After the Suspicion values are updated in the DataStructure we need to sort the Data in Descending order based on Tarantula, SBI, Jaccard and followed by Ochai.
+- Create a FileUtil Class that takes care of exporting the DataStructure into 5 columns in MethodName followed by the 4 Suspicion values in an Excel File.
+- Update Readme File.
