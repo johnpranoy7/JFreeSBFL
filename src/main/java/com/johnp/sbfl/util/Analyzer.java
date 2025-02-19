@@ -24,11 +24,12 @@ public class Analyzer {
 
         File[] listOfFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
 
+
         int flunkCount = 0;
         int totalFailedTests = 0;
         int totalPassedTests = 0;
 
-        if (listOfFiles != null) {
+        if (listOfFiles != null && listOfFiles.length > 0) {
             for (File file : listOfFiles) {
                 if (file.isFile()) {
                     try {

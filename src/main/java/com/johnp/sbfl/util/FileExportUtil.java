@@ -1,6 +1,8 @@
 package com.johnp.sbfl.util;
 
 import com.johnp.sbfl.bean.MethodInfo;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -13,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileExportUtil {
 
-    // ** Reference: Export Data to Excel in Java */
-    // **
-    // ** https://www.codejava.net/coding/java-code-example-to-export-data-from-database-to-excel-file
+    // ** Reference: Export Data to Excel in Java
+    // *? https://www.codejava.net/coding/java-code-example-to-export-data-from-database-to-excel-file
     // */
 
     public static void xlsExport(String fileName, List<Map.Entry<String, MethodInfo>> dataList) throws IOException {
@@ -34,17 +36,20 @@ public class FileExportUtil {
     }
 
     private static void beautifyColumns(XSSFSheet sheet) {
-        // ** REF: https://www.baeldung.com/java-apache-poi-expand-columns
+
+        // *? REF: https://stackoverflow.com/a/59718764
+        // ** Set Fixed Width for Column
+        sheet.setColumnWidth(0, 90 * 256);
+
+        // *? REF: https://www.baeldung.com/java-apache-poi-expand-columns
         // ** Add Auto Width on All Columns
-        sheet.autoSizeColumn(0);
         sheet.autoSizeColumn(1);
         sheet.autoSizeColumn(2);
         sheet.autoSizeColumn(3);
         sheet.autoSizeColumn(4);
         sheet.createFreezePane(0, 1);
 
-        // ** REF:
-        // ** https://stackoverflow.com/questions/77938769/how-to-add-filters-for-specific-columns-using-apache-poi
+        // *? REF: https://stackoverflow.com/questions/77938769/how-to-add-filters-for-specific-columns-using-apache-poi
         sheet.setAutoFilter(CellRangeAddress.valueOf("A1:E1"));
     }
 
