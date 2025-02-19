@@ -34,6 +34,9 @@ To run the application, use the following command:
 java -jar target/JFreeSBFL-1.0-SNAPSHOT.jar <filePath> <failCount>
 ```
 
+![screenshot](Documentation/Images/1.png)
+![screenshot](Documentation/Images/2.png)
+
 ### Arguments
 
 - `<filePath>`: The path to the coverage data directory. If not provided, the default path will be used.
@@ -54,6 +57,8 @@ The application will generate an Excel file named `Suspicion.xlsx` in the direct
 - Ochai Suspicion
 
 The data will be sorted in descending order based on the Tarantula, SBI, Jaccard and Ochai Suspicion column.
+
+![screenshot](Documentation/Images/3.png)
 
 ### Logging
 
