@@ -53,7 +53,7 @@ The application will generate an Excel file named `Suspicion.xlsx` in the direct
 - Jaccard Suspicion
 - Ochai Suspicion
 
-The data will be sorted in descending order based on the SBI Suspicion column.
+The data will be sorted in descending order based on the Tarantula, SBI, Jaccard and Ochai Suspicion column.
 
 ### Logging
 
