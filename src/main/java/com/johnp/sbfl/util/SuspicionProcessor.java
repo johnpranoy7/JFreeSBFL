@@ -30,18 +30,59 @@ public class SuspicionProcessor {
         return ef / Math.sqrt(nf * (ef + ep));
     }
 
+    public static double calculateAmple(double ef, double ep, double nf, double np) {
+        return Math.abs(safeDiv(ef, ef + nf) - safeDiv(ep, ep + np));
+    }
+
+    public static double calculateRusselRao(double ef, double nf, double np) {
+        return safeDiv(ef, nf + np);
+    }
+
+    public static double calculateDice(double ef, double ep, double nf) {
+        return safeDiv(2 * ef, nf + ep);
+    }
+
+    public static double calculateWong1(double ef) {
+        return Math.abs(ef);
+    }
+
+    public static double calculateWong2(double ef, double ep) {
+        return Math.abs(ef - ep);
+    }
+
+
+    public static double calculateDstar2(double ef, double ep, double nf, double np) {
+        return safeDiv(Math.pow(ef, 2), ep + nf + np);
+    }
+
+    public static double calculateKulczynski1(double ef, double ep, double nf) {
+        return safeDiv(ef, nf + ep);
+    }
+
+    public static double calculateSorensenDice(double ef, double ep, double nf) {
+        return safeDiv(2 * ef, 2 * ef + ep + nf);
+    }
+
+    public static double calculateGP03(double ef, double ep) {
+        return Math.sqrt(Math.abs(Math.pow(ef, 2) - Math.sqrt(ep)));
+    }
+
+    public static double calculateGP13(double ef, double ep) {
+        return ef * (1 + safeDiv(1, 2 * ep + ef));
+    }
+
     public static List<Map.Entry<String, MethodInfo>> sortSuspicion(Map<String, MethodInfo> data) {
         List<Map.Entry<String, MethodInfo>> dataList = new ArrayList<>(data.entrySet());
 
         // ** Sort the data in descending order of Tarantula, SBI, Jaccard, Ochai
         dataList.sort(Comparator
-                .comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getSuspiciousnessTarantula())
+                .comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getTarantula())
                 .reversed()
-                .thenComparing(Comparator.comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getSuspiciousnessSbi())
+                .thenComparing(Comparator.comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getSbi())
                         .reversed())
-                .thenComparing(Comparator.comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getSuspiciousnessJaccard())
+                .thenComparing(Comparator.comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getJaccard())
                         .reversed())
-                .thenComparing(Comparator.comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getSuspiciousnessOchiai())
+                .thenComparing(Comparator.comparingDouble((Map.Entry<String, MethodInfo> entry) -> entry.getValue().getOchiai())
                         .reversed())
         );
         return dataList;

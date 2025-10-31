@@ -77,17 +77,47 @@ public class Analyzer {
 
     private static void computeSBFLForEachMethod(int totalPassedTests, int totalFailedTests) {
         methodMap.forEach((methodName, methodInfo) -> {
-            methodInfo.setSuspiciousnessTarantula(SuspicionProcessor.calculateTarantula(methodInfo.getMethodPasses(),
+            methodInfo.setTarantula(SuspicionProcessor.calculateTarantula(methodInfo.getMethodPasses(),
                     methodInfo.getMethodFailures(), totalFailedTests, totalPassedTests));
 
-            methodInfo.setSuspiciousnessSbi(SuspicionProcessor.calculateSbi(methodInfo.getMethodPasses(),
+            methodInfo.setSbi(SuspicionProcessor.calculateSbi(methodInfo.getMethodPasses(),
                     methodInfo.getMethodFailures()));
 
-            methodInfo.setSuspiciousnessJaccard(SuspicionProcessor.calculateJaccard(methodInfo.getMethodPasses(),
+            methodInfo.setJaccard(SuspicionProcessor.calculateJaccard(methodInfo.getMethodPasses(),
                     methodInfo.getMethodFailures(), totalFailedTests));
 
-            methodInfo.setSuspiciousnessOchiai(SuspicionProcessor.calculateOchiai(methodInfo.getMethodPasses(),
+            methodInfo.setOchiai(SuspicionProcessor.calculateOchiai(methodInfo.getMethodPasses(),
                     methodInfo.getMethodFailures(), totalFailedTests));
+
+            methodInfo.setAmple(SuspicionProcessor.calculateAmple(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests, totalPassedTests));
+
+            methodInfo.setRusselRao(SuspicionProcessor.calculateRusselRao(
+                    methodInfo.getMethodFailures(), totalFailedTests, totalPassedTests));
+
+            methodInfo.setDice(SuspicionProcessor.calculateDice(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests));
+
+            methodInfo.setWong1(SuspicionProcessor.calculateWong1(methodInfo.getMethodFailures()));
+
+            methodInfo.setWong2(SuspicionProcessor.calculateWong2(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures()));
+
+            methodInfo.setDstar2(SuspicionProcessor.calculateDstar2(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests, totalPassedTests));
+
+            methodInfo.setKulczynski1(SuspicionProcessor.calculateKulczynski1(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests));
+
+            methodInfo.setSorensenDice(SuspicionProcessor.calculateSorensenDice(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures(), totalFailedTests));
+
+            methodInfo.setGp03(SuspicionProcessor.calculateGP03(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures()));
+
+            methodInfo.setGp13(SuspicionProcessor.calculateGP13(methodInfo.getMethodPasses(),
+                    methodInfo.getMethodFailures()));
+
         });
     }
 

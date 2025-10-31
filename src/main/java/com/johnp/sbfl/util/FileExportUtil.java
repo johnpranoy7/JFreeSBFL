@@ -47,10 +47,21 @@ public class FileExportUtil {
         sheet.autoSizeColumn(2);
         sheet.autoSizeColumn(3);
         sheet.autoSizeColumn(4);
+        sheet.autoSizeColumn(5);
+        sheet.autoSizeColumn(6);
+        sheet.autoSizeColumn(7);
+        sheet.autoSizeColumn(8);
+        sheet.autoSizeColumn(9);
+        sheet.autoSizeColumn(10);
+        sheet.autoSizeColumn(11);
+        sheet.autoSizeColumn(12);
+        sheet.autoSizeColumn(13);
+        sheet.autoSizeColumn(14);
+
         sheet.createFreezePane(0, 1);
 
         // *? REF: https://stackoverflow.com/questions/77938769/how-to-add-filters-for-specific-columns-using-apache-poi
-        sheet.setAutoFilter(CellRangeAddress.valueOf("A1:E1"));
+        sheet.setAutoFilter(CellRangeAddress.valueOf("A1:O1"));
     }
 
     private static void writeHeaderLine(XSSFSheet sheet) {  
@@ -61,16 +72,47 @@ public class FileExportUtil {
         headerCell.setCellValue("Method Name");
 
         headerCell = headerRow.createCell(1);
-        headerCell.setCellValue("Tarantula Suspicion");
+        headerCell.setCellValue("Tarantula");
 
         headerCell = headerRow.createCell(2);
-        headerCell.setCellValue("SBI Suspicion");
+        headerCell.setCellValue("SBI");
 
         headerCell = headerRow.createCell(3);
-        headerCell.setCellValue("Jaccard Suspicion");
+        headerCell.setCellValue("Jaccard");
 
         headerCell = headerRow.createCell(4);
-        headerCell.setCellValue("Ochai Suspicion");
+        headerCell.setCellValue("Ochai");
+
+        headerCell = headerRow.createCell(5);
+        headerCell.setCellValue("Ample");
+
+        headerCell = headerRow.createCell(6);
+        headerCell.setCellValue("Russel Rao");
+
+        headerCell = headerRow.createCell(7);
+        headerCell.setCellValue("Dice");
+
+        headerCell = headerRow.createCell(8);
+        headerCell.setCellValue("Wong1");
+
+        headerCell = headerRow.createCell(9);
+        headerCell.setCellValue("Wong2");
+
+        headerCell = headerRow.createCell(10);
+        headerCell.setCellValue("Dstar2");
+
+        headerCell = headerRow.createCell(11);
+        headerCell.setCellValue("Kulczynski1");
+
+        headerCell = headerRow.createCell(12);
+        headerCell.setCellValue("Sorensen Dice");
+
+        headerCell = headerRow.createCell(13);
+        headerCell.setCellValue("GP03");
+
+        headerCell = headerRow.createCell(14);
+        headerCell.setCellValue("GP13");
+
     }
 
     private static void writeDataLines(List<Map.Entry<String, MethodInfo>> dataList,
@@ -78,10 +120,20 @@ public class FileExportUtil {
         AtomicInteger rowCount = new AtomicInteger(1);
 
         dataList.forEach(entry -> {
-            double tarantulaSuspicion = entry.getValue().getSuspiciousnessTarantula();
-            double sbiSuspicion = entry.getValue().getSuspiciousnessSbi();
-            double jaccardSuspicion = entry.getValue().getSuspiciousnessJaccard();
-            double ochaiSuspicion = entry.getValue().getSuspiciousnessOchiai();
+            double tarantulaSuspicion = entry.getValue().getTarantula();
+            double sbiSuspicion = entry.getValue().getSbi();
+            double jaccardSuspicion = entry.getValue().getJaccard();
+            double ochaiSuspicion = entry.getValue().getOchiai();
+            double ampleSuspicion = entry.getValue().getAmple();
+            double russelRaoSuspicion = entry.getValue().getRusselRao();
+            double diceSuspicion = entry.getValue().getDice();
+            double wong1Suspicion = entry.getValue().getWong1();
+            double wong2Suspicion = entry.getValue().getWong2();
+            double dstar2Suspicion = entry.getValue().getDstar2();
+            double kulczynski1 = entry.getValue().getKulczynski1();
+            double sorensenDice = entry.getValue().getSorensenDice();
+            double gp03 = entry.getValue().getGp03();
+            double gp13 = entry.getValue().getGp13();
 
             Row row = sheet.createRow(rowCount.getAndIncrement());
 
@@ -98,8 +150,38 @@ public class FileExportUtil {
             cell = row.createCell(columnCount++);
             cell.setCellValue(jaccardSuspicion);
 
-            cell = row.createCell(columnCount);
+            cell = row.createCell(columnCount++);
             cell.setCellValue(ochaiSuspicion);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(ampleSuspicion);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(russelRaoSuspicion);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(diceSuspicion);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(wong1Suspicion);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(wong2Suspicion);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(dstar2Suspicion);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(kulczynski1);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(sorensenDice);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(gp03);
+
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(gp13);
 
         });
 
